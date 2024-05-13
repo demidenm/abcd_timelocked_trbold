@@ -1,0 +1,44 @@
+#!/bin/bash -l
+#SBATCH -J first_abcd
+#SBATCH --array=0-3
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=4
+#SBATCH --mem-per-cpu=6G
+#SBATCH -t 3:00:00	
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=mdemiden@umn.edu
+#SBATCH -p msismall,agsmall
+#SBATCH -o logs/%x_%A_%a.out #update for abcd/ahrb/mls
+#SBATCH -e logs/%x_%A_%a.err #update for abcd/ahrb/mls
+#SBATCH -A feczk001 
+
+source $HOME/miniconda3/etc/profile.d/conda.sh
+conda activate fmri_env
+module load fsl
+ID=${SLURM_ARRAY_TASK_ID}
+
+if [[ $ID == 0 ]]; then
+	scanner="ge"
+	echo "Starting copying for $scanner scanner"
+	cat subj_ids/n50_baseline_ge.tsv | while read sub ; do 
+		sg feczk001 "./abcd_trimmedpreproc.sh '${sub}' '${scanner}'" 
+	done
+
+elif [[ $ID == 1 ]]; then
+	scanner="siemens"
+	echo "Starting copying for $scanner scanner"
+	cat subj_ids/n50_baseline_${scanner}.tsv | while read sub ; do 
+		sg feczk001 "./abcd_trimmedpreproc.sh '${sub}' '${scanner}'" 
+	done
+
+elif [[ $ID == 2 ]]; then
+
+	scanner="philips"
+	echo "Starting copying for $scanner scanner"
+	cat subj_ids/n50_baseline_${scanner}.tsv | while read sub ; do 
+		sg feczk001 "./abcd_trimmedpreproc.sh '${sub}' '${scanner}'" 
+	done
+else
+	echo "$ID should be 0, 1, 2, $ID provided "
+fi

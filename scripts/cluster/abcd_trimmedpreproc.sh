@@ -1,15 +1,16 @@
 #!/bin/bash
 
 # define variables
-curr_dir=/home/feczk001/mdemiden/analyses/mid_rt_bold/scripts/cluster_jobs
+curr_dir=`pwd`
 ses=ses-baselineYear1Arm1
 ses_r=baselineYear1Arm1
 sub=sub-${1}
 scanner=${2}
 fmriprep=fmriprep_v23_1_4
 task=MID
+n_vols=403
 beh_dat=${curr_dir}/../../../../slurm_ABCD_s3/Beh_Data
-tmp_in=/sctach.global/${USER}/by_scanner/${scanner}
+tmp_in=/scratch.global/${USER}/task_byscanner/${scanner}
 vol_info_file=${tmp_in}/vol_info.tsv
 script_dir=${curr_dir}/..
 
