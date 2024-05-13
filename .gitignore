@@ -2,3 +2,4 @@ scripts/cluster/subj_ids
 scripts/.ipynb_checkpoints/
 scripts/cluster/logs/
 .idea
+scripts/cluster/batch_jobs/

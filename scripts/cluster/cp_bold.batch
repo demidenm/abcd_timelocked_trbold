@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#SBATCH -J first_abcd
+#SBATCH -J cp_files
 #SBATCH --array=0-3
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1

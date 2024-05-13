@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# define variables
+curr_dir=`pwd`
+ses=baselineYear1Arm1
+scanner=SCANNER
+roi=ROILABEL
+task=MID
+inp_deriv=/scratch.global/${USER}/task_byscanner/${scanner}
+inp_beh=/scratch.global/${USER}/task_byscanner/${scanner}
+output=/scratch.global/${USER}/task_byscanner/files
+script_dir=${curr_dir}/..
+
+echo "Running $roi for $scanner "
+python ${script_dir}/cuelocked_timeseries.py 	--inp_deriv ${inp_deriv} \
+						--inp_beh ${inp_beh} \
+						--task ${task} \
+						--ses $ses \
+						--roi_label ${roi} \
+						--scanner ${scanner} \
+						--output ${output}
+
+cuetrplt_error=$?
+
+if [ ${cuetrplt_error} -eq 0 ]; then
+	echo "Python tr-by-tr plotting completed successfully! Saved in ${output} "
+else
+	echo "Python tr-by-tr plotting failed."
+	exit 1
+fi

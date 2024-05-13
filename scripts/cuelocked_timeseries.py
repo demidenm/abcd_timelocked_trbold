@@ -309,7 +309,7 @@ if __name__ == "__main__":
 
     # specify ROI
     if roi_label == "visual":
-        roi_coorinates = (-6, -90, -2)  # left visual from neurosynth
+        roi_coordinates = (-6, -90, -2)  # left visual from neurosynth
     elif roi_label == "motor":
         roi_coordinates = (-38, -22, 56)  # left motor from neurosynth
     elif roi_label == "nacc":
