@@ -5,6 +5,8 @@ curr_dir=`pwd`
 ses=baselineYear1Arm1
 scanner=SCANNER
 roi=ROILABEL
+onset_col=Probe.OnsetTime
+cond_col=Feedback.Response
 task=MID
 inp_deriv=/scratch.global/${USER}/task_byscanner/${scanner}
 inp_beh=/scratch.global/${USER}/task_byscanner/${scanner}
@@ -17,6 +19,8 @@ python ${script_dir}/cuelocked_timeseries.py 	--inp_deriv ${inp_deriv} \
 						--task ${task} \
 						--ses $ses \
 						--roi_label ${roi} \
+						--onset_col ${onset_col} \
+						--cond_col ${cond_col} \
 						--scanner ${scanner} \
 						--output ${output}
 

@@ -289,6 +289,8 @@ def parse_args():
     parser.add_argument("--task", help="task type -- e.g., mid, reward, etc")
     parser.add_argument("--ses", help="session, include the session type without prefix, e.g., 1, 01, baselinearm1")
     parser.add_argument("--roi_label", help="specify roi, visual, motor or nacc")
+    parser.add_argument("--onset_col", help="specify column to lock to onset time, e.g. 'Cue.OnsetTime'")
+    parser.add_argument("--cond_col", help="specify column with condition labs, e.g. 'Condition'")
     parser.add_argument("--scanner", help="specify scanner name, e.g. philips, siemens, ge")
     parser.add_argument("--output", help="output folder where to write out save timeseries df and plot")
 
@@ -304,6 +306,8 @@ if __name__ == "__main__":
     task = args.task
     ses = args.ses
     roi_label = args.roi_label
+    onset_time = args.onset_col
+    cond_type = args.cond_col
     scanner = args.scanner
     out_fold = args.output
 
@@ -326,9 +330,7 @@ if __name__ == "__main__":
     roi_radius = 8  # from 2021 knutson paper
     trdelay = 20
     task = 'MID'
-    onset_time = 'Cue.OnsetTime'
-    cond_type = 'Condition'
-    plt_conditions = ['LgReward', 'LgPun', 'Triangle']
+    plt_conditions = ['LgReward_hit', 'LgPun_hit', 'Triangle_hit']
 
     for run in ['01', '02']:
         # select paths
@@ -352,10 +354,12 @@ if __name__ == "__main__":
         if not os.path.exists(out_fold):
             os.makedirs(out_fold)
 
+        colname = onset_time.replace('.', '').replace(' ', '')
 
         plot_responses(df=df_timeseries, tr=scan_tr, delay=trdelay,
-                       save_path=f'{out_fold}/subs-{n_subs}_run-{run}_timeseries-{roi_label}_scanner-{scanner}.png',
+                       save_path=f'{out_fold}/subs-{n_subs}_run-{run}_timeseries-{roi_label}_scanner-{scanner}_{colname}.png',
                        style='whitegrid', show_plot=False, ylim=(-.5, .5), plt_hrf=None)
 
         mask_coord.to_filename(f'{out_fold}/mni_roi-{roi_label}.nii.gz')
-        df_timeseries.to_csv(f'{out_fold}/subs-{n_subs}_run-{run}_timeseries-{roi_label}_scanner-{scanner}.csv', sep=',')
+        df_timeseries.to_csv(f'{out_fold}/subs-{n_subs}_run-{run}_timeseries-{roi_label}_scanner-{scanner}_{colname}.csv',
+                             sep=',')
