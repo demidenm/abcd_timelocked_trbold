@@ -336,9 +336,16 @@ if __name__ == "__main__":
         # select paths
         bold_list = glob(f'{inp_deriv}/**/ses-{ses}/func/'
                          f'*_run-{run}_space-MNI152NLin2009cAsym_res-2_desc-preproc_bold.nii.gz')
+        bold_ids = [os.path.basename(path).split('_')[0] for path in bold_list]
+
         beh_list = glob(f'{inp_beh}/**/ses-{ses}/func/*_run-{run}_events.tsv')
+        beh_ids = [os.path.basename(path).split('_')[0] for path in beh_list]
+
         assert len(bold_list) == len(beh_list), f"Length of bold and beh paths do not match, " \
                                                 f"e.g. {len(bold_list)} & {len(beh_list)}"
+
+        assert (np.array(bold_ids) == np.array(beh_ids)).all(), "Mismatch in order of IDs"
+
         print("Bold files: ", len(bold_list), "Behavioral files: ", len(beh_list))
         n_subs = len(bold_list)
 
